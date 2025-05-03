@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
         required: [true, "User must have passwordConfirm."],
         select: false,
         validate: {
-            validator: function(val){
+            validator: function (val) {
                 return this.password === val
             },
             message: "Password and PasswordConfirm values do not match!"
@@ -74,7 +74,7 @@ const userSchema = new mongoose.Schema({
             ref: "Room"
         }
     ],
-    
+
     role: {
         type: String,
         enum: ["admin", "user"],
@@ -98,14 +98,14 @@ const userSchema = new mongoose.Schema({
     passwordResetTokenExpires: Date
 });
 
-userSchema.pre("save", async function(next){
-    if(!this.isModified("password") ){ return next() }
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) { return next() }
     this.passwordChangedAt = Date.now() - 1000
     next()
 });
 // Hashing Password before it is stored & Set Date of changing password
-userSchema.pre("save", async function(next){
-    if( !this.isModified("password") ){ return next() }
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) { return next() }
     this.password = await bcrypt.hash(this.password, 12)
     console.log("password", this.password)
     this.passwordConfirm = undefined
@@ -114,18 +114,18 @@ userSchema.pre("save", async function(next){
 });
 
 // Compare Passwords when logging in
-userSchema.methods.correctPassword = async function(password, hashPassword){
+userSchema.methods.correctPassword = async function (password, hashPassword) {
     return await bcrypt.compare(password, hashPassword);
 }
 
 // Check if user changed password after token was issued
-userSchema.methods.passwordChangedAfter = function(JWTTimestamp){
-    if(!this.passwordChangedAt){ return false }
+userSchema.methods.passwordChangedAfter = function (JWTTimestamp) {
+    if (!this.passwordChangedAt) { return false }
     return this.passwordChangedAt.getTime() / 1000 > JWTTimestamp
 }
 
 // Generate random password reset token
-userSchema.methods.createPasswordResetToken = function(){
+userSchema.methods.createPasswordResetToken = function () {
     const resetToken = crypto.randomBytes(32).toString("hex")
     this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex")
     this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000
@@ -133,6 +133,10 @@ userSchema.methods.createPasswordResetToken = function(){
     return resetToken
 }
 
+// userSchema.pre(/^find/, function(next){
+//     this.populate("joinedRooms")
+//     next()
+// })
 
 const User = mongoose.model("User", userSchema);
 module.exports = User

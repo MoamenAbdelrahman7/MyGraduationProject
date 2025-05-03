@@ -31,11 +31,12 @@ exports.joinMember = catchAsync(async (req, res, next) => {
     await room.save()
     member.joinedRooms.push(roomId)
     await member.save()
+    const updatedMember = await User.findById(memberId).populate("joinedRooms");
 
     res.status(200).json({
         status: "success",
         message: `User joined successfully to the room ${room.title}`,
-        member: member
+        member: updatedMember
     })
 })
 
