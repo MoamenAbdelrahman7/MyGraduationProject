@@ -20,7 +20,7 @@ router.route("/me")
 router.route("/follow").post(userController.followUser)
 
 // Admin routes
-router.use(authController.restrictTo("admin"))
+// router.use(authController.restrictTo("admin"))
 router.route("/").get(userController.getUsers)
 router.route("/:id").get(userController.getUser)
 
