@@ -4,7 +4,7 @@ const { excludeFieldsFilter } = require("./../utils/filterReqBody")
 const catchAsync = require("../utils/catchAsync")
 
 exports.createPost = factory.createOne(Post, excludeFieldsFilter, ["user"], (req, filter) => {
-    filter.user = req.body.id// req.user.id
+    filter.user = req.user ? req.user.id : req.body.id;
 })
 exports.getPost = factory.getOne(Post)
 exports.getPosts = factory.getAll(Post)

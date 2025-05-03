@@ -24,13 +24,19 @@ const postSchema = new mongoose.Schema({
         default: Date.now()
     }
 })
+
 postSchema.methods.verifyUser = function(user){
-    return this.user.equals(user._id) || user.role === "admin"
+    if (!user) return false;
+    const userId = user._id || user;
+    return this.user.equals ? this.user.equals(userId) : this.user.toString() === userId.toString();
 }
 
 postSchema.pre(/^find/, function(next){
-    this.populate("user")
-    this.populate("comments")
+    this.populate({
+        path: "user",
+        select: "name photo email" // Only populate essential fields
+    });
+    next();
 })
 
 const Post = mongoose.model("Post", postSchema)

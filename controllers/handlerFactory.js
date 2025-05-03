@@ -36,18 +36,31 @@ exports.getOne = (Model, customFilter=null)=> catchAsync( async (req, res, next)
 })
 
 exports.getAll = (Model, customFilter=null) => catchAsync( async (req, res, next) =>{
-    let filter ={}
-    if(customFilter){ filter = customFilter(req) }
-    const features = new APIFeatures(Model.find(filter), req.query)
-    features.filter().sort().limitFields().paginate();
+    try {
+        let filter = {};
+        if(customFilter){ filter = customFilter(req) }
+        
+        const features = new APIFeatures(Model.find(filter), req.query)
+            .filter()
+            .sort()
+            .limitFields()
+            .paginate();
+            
+        const docs = await features.query;
 
-    const docs = await features.query ;
+        if (!docs) {
+            return next(new AppError('No documents found', 404));
+        }
 
-    res.status(200).json({
-        status: "success",
-        results: docs.length,
-        data: docs
-    })
+        res.status(200).json({
+            status: "success",
+            results: docs.length,
+            data: docs
+        });
+    } catch (error) {
+        console.error("Error fetching documents:", error);
+        return next(new AppError(`Error fetching documents: ${error.message}`, 500));
+    }
 });
 
 exports.updateOne = (Model, filterFunction=null, fields=[], customFilter=null) => catchAsync( async (req, res, next)=> {
