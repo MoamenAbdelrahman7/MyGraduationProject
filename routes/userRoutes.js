@@ -5,7 +5,7 @@ const router = express.Router()
 
 // Public routes
 router.route("/login").post(authController.login)
-router.route("/signup").post(userController.uploadUserPhoto, userController.resizeUserPhoto, authController.signUp)
+router.route("/signup").post(/*userController.uploadUserPhoto, userController.resizeUserPhoto,*/ authController.signUp)
 router.route("/forgotPassword").post(authController.forgotPassword)
 router.route("/resetPassword/:token").post(authController.resetPassword)
 

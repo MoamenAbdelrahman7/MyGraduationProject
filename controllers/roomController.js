@@ -34,7 +34,8 @@ exports.joinMember = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: "success",
-        message: `User joined successfully to the room ${room.title}`
+        message: `User joined successfully to the room ${room.title}`,
+        member: member
     })
 })
 
