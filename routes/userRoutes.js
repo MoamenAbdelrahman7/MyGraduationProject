@@ -10,7 +10,7 @@ router.route("/forgotPassword").post(authController.forgotPassword)
 router.route("/resetPassword/:token").post(authController.resetPassword)
 
 // Protected routes
-router.use(authController.protect)
+// router.use(authController.protect)
 
 router.route("/updatePassword").patch(authController.updatePassword)
 router.route("/me")
