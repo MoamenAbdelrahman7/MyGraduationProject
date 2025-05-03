@@ -16,7 +16,7 @@ exports.deleteRoom = factory.deleteOne(Room)
 
 exports.joinMember = catchAsync(async (req, res, next) => {
     const { roomId } = req.body
-    const memberId = req.user.id
+    const { memberId } = req.body //req.user.id
     const room = await Room.findById(roomId)
     if (!room) { return next(new AppError("There is no room with that id.", 404)) }
     const member = await User.findById(memberId)
