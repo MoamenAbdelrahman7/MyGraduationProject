@@ -1,0 +1,18 @@
+{
+  "workbench.editor.decorations.badges": false,
+  "workbench.editor.decorations.colors": false,
+  "workbench.colorCustomizations": {
+    // Sidebar file colors
+    "list.errorForeground": "#FFA500",
+    "list.warningForeground": "#FFFF00",
+    
+    // Tab/status bar colors
+    "statusBar.errorBackground": "#FFA500",
+    "tab.activeBorder": "#00FF00",
+    "editorError.foreground": "#FFA500",
+    
+    // Icons (optional)
+    "problemsErrorIcon.foreground": "#ffa600",
+    "problemsWarningIcon.foreground": "#FFFF00"
+  }
+}
