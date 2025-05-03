@@ -48,7 +48,7 @@ exports.getUser = factory.getOne(User);
 
 // Get current user data
 exports.getMe =  (req, res, next)=>{
-    req.params.id = req.user.id
+    req.params.id = req.body._id // req.user.id
     next()
 }
 

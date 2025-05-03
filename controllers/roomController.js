@@ -26,7 +26,7 @@ exports.joinMember = catchAsync(async (req, res, next) => {
     if (memberIndex !== -1) { return next(new AppError(`There user is already exist in room ${roomId}`)) }
     const JoinedRoomIndex = member.joinedRooms.indexOf(roomId)
     if (JoinedRoomIndex !== -1) { return next(new AppError(`There user is already exist in room ${roomId}`)) }
-
+   
     room.members.push(memberId)
     await room.save()
     member.joinedRooms.push(roomId)
