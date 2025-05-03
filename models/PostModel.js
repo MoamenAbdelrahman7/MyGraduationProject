@@ -28,5 +28,10 @@ postSchema.methods.verifyUser = function(user){
     return this.user.equals(user._id) || user.role === "admin"
 }
 
+postSchema.pre(/^find/, function(next){
+    this.populate("user")
+    this.populate("comments")
+})
+
 const Post = mongoose.model("Post", postSchema)
 module.exports = Post
