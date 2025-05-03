@@ -113,6 +113,11 @@ userSchema.pre("save", async function (next) {
     next()
 });
 
+userSchema.pre(/^find/, function (next) {
+    this.populate("joinedRooms")
+    next()
+})
+
 // Compare Passwords when logging in
 userSchema.methods.correctPassword = async function (password, hashPassword) {
     return await bcrypt.compare(password, hashPassword);
@@ -133,10 +138,7 @@ userSchema.methods.createPasswordResetToken = function () {
     return resetToken
 }
 
-// userSchema.pre(/^find/, function(next){
-//     this.populate("joinedRooms")
-//     next()
-// })
+
 
 const User = mongoose.model("User", userSchema);
 module.exports = User
